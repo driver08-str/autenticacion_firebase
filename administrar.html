@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="titulo">Administración de Usuarios</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="administrar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <h1>Administración de Usuarios</h1>
+    <table>
+        <tr>
+            <th>UID</th>
+            <th>Correo electrónico</th>
+            <th>Nombre</th>
+            <th>Eliminar</th>
+            <th>Modificar</th>
+            <th>Recuperar contraseña</th>
+        </tr>
+        <tr>
+            <td>UID1</td>
+            <td id="correo-UID1">
+                <!-- Aquí se mostrará el correo electrónico -->
+            </td>
+            <td id="nombre-UID1"></td>
+                <!-- Aquí se mostrará el nombre -->
+            </td>
+            <td>
+                <button onclick="eliminarUsuario('UID1')">
+                    <i class="fa fa-trash"></i> Eliminar
+                </button>
+            </td>
+            <td>
+                <button onclick="modificarUsuario('UID1')">
+                    <i class="fa fa-pencil"></i> Modificar
+                </button>
+            </td>
+            <td>
+                <button onclick="recuperarContraseña('UID1')">
+                    <i class="fa fa-key"></i> Recuperar Contraseña
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+        // Configura tu proyecto de Firebase aquí
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID",
+            measurementId: "TU_MEASUREMENT_ID"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Función para eliminar un usuario
+        function eliminarUsuario(uid) {
+            auth.deleteUser(uid)
+                .then(function() {
+                    console.log("Usuario eliminado correctamente");
+                })
+                .catch(function(error) {
+                    console.log("Error al eliminar usuario:", error);
+                });
+        }
+
+        // Función para modificar un usuario
+        function modificarUsuario(uid, nuevosDatos) {
+            auth.updateUser(uid, nuevosDatos)
+                .then(function() {
+                    console.log("Usuario modificado correctamente");
+                })
+                .catch(function(error) {
+                    console.log("Error al modificar usuario:", error);
+                });
+        }
+
+        // Función para recuperar la contraseña de un usuario
+        function recuperarContraseña(email) {
+            auth.sendPasswordResetEmail(email)
+                .then(function() {
+                    console.log("Correo de recuperación de contraseña enviado");
+                })
+                .catch(function(error) {
+                    console.log("Error al enviar correo de recuperación de contraseña:", error);
+                });
+        }
+        
+        db.collection("usuarios").doc("UID1").get().then((doc) => {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                document.getElementById('correo-UID1').innerText = doc.data().correo;
+                document.getElementById('nombre-UID1').innerText = doc.data().nombre;
+            } else {
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    </script>
+</body>
+</html>

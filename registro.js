@@ -33,5 +33,5 @@ registro.addEventListener('click', (e) => {
         } else if (errorCode == 'auth/weak-password') {
             alert('La Contraseña debe tener al menos 8 caracteres');
         }
-    });
+    }));
 });
