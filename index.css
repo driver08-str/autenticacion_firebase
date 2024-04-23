@@ -131,3 +131,22 @@ button[type='submit']:hover {
 #botones button {
     font-size: 1.75rem; /* 75% más grande que el tamaño de fuente base */
 }
+
+#botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 20px;
+}
+body {
+    background-image: url('fondo.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+button {
+    background: transparent;
+    border: none;
+    color: #e7d3d3; 
+}
